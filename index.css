@@ -1,6 +1,7 @@
 #cardGame {
     width: 24em;
     height: 16em;
+    perspective: 1000px
 }
 
 .pokeCard {
@@ -9,10 +10,9 @@
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1s;
-    perspective: 1000px
 }
 
-.pokeCard:hover {
+.flipped {
     transform: rotateY(180deg)
 }
 

@@ -9,6 +9,11 @@ const setup = async () => {
     // Test image: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png
     let pokemonImg = pokemon.sprites.front_default
 
+    $(".pokeCard").on("click", function () {
+        console.log("Click")
+        this.classList.toggle('flipped')
+    });
+
     // for (let index = 0; index < 6; index++) {
     //     $('#cardGame').append(`
     //     <div class="card">
