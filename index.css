@@ -1,0 +1,25 @@
+#cardGame {
+    width: 24em;
+    height: 16em;
+}
+
+.pokeCard {
+    width: 8em;
+    height: 8em;
+    position: relative
+}
+
+.pokeImg,
+.pokeBack {
+    width: 100%;
+    height: 100%;
+    position: absolute
+}
+
+.pokeBack {
+    z-index: 1
+}
+
+.pokeImg {
+    z-index: 0
+}

@@ -6,18 +6,19 @@ const setup = async () => {
     let cardBack = `https://velvety-mousse-38f1cf.netlify.app/back.webp`
     console.log("Pokemon")
     console.log(pokemon)
+    // Test image: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png
     let pokemonImg = pokemon.sprites.front_default
 
-    for (let index = 0; index < 6; index++) {
-        $('#cardGame').append(`
-        <div class="card">
-        <img src="${pokemonImg}">
-        <img src="${cardBack}">
-            Potato
-        </div>
-        `)
+    // for (let index = 0; index < 6; index++) {
+    //     $('#cardGame').append(`
+    //     <div class="card">
+    //     <img src="${pokemonImg}">
+    //     <img src="${cardBack}">
+    //         Potato
+    //     </div>
+    //     `)
 
-    }
+    // }
 }
 
 
