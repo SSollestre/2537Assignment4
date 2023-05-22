@@ -1,7 +1,7 @@
 #cardGame {
-    width: 24em;
-    height: 16em;
-    perspective: 1000px
+    width: 25em;
+    height: 17em;
+    perspective: 1000px;
 }
 
 .pokeCard {

@@ -60,6 +60,11 @@ function startTimer(duration) {
     let timer = duration
     let minutes, seconds
 
+    let initialMinutes = parseInt(timer / 60, 10)
+    let initialSeconds = parseInt(timer % 60, 10)
+    initialMinutes = initialMinutes < 10 ? "0" + initialMinutes : initialMinutes
+    initialSeconds = initialSeconds < 10 ? "0" + initialSeconds : initialSeconds
+
     let intervalId = setInterval(() => {
         minutes = parseInt(timer / 60, 10)
         seconds = parseInt(timer % 60, 10)
@@ -67,6 +72,9 @@ function startTimer(duration) {
         minutes = minutes < 10 ? "0" + minutes : minutes
         seconds = seconds < 10 ? "0" + seconds : seconds
         console.log(minutes + ":" + seconds)
+        $('#time').html(`
+        Initial time: ${initialMinutes}: ${initialSeconds}. Time remaining: ${minutes} : ${seconds}
+        `)
         if (--timer < 0) {
             clearInterval(intervalId)
             console.log("Timer expired")
@@ -84,7 +92,7 @@ const setup = async () => {
     let pokemonImg = pokemon.sprites.front_default
     let flippedCards = [];
     let win = false;
-    startTimer(5)
+
 
     $(".pokeCard").on("click", (event) => {
         cardClick(event, flippedCards)
@@ -98,6 +106,16 @@ const setup = async () => {
     $(".btn-group .btn").click(function () {
         console.log("test")
         $(this).addClass('active').addClass('focus').siblings().removeClass('active')
+    })
+
+    $('#reset').on('click', () => {
+        location.reload()
+    })
+
+    $('#start').on('click', function () {
+        startTimer(65)
+        $('#cardGame').removeClass('d-none')
+        $(this).addClass('d-none')
     })
 
 
