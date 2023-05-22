@@ -69,6 +69,8 @@ function checkWin() {
 function startTimer(duration) {
     let timer = duration
     let minutes, seconds
+    let event = Math.floor(Math.random() * (duration - 5 - 15 + 1)) + 15;
+    console.log(event)
 
     let initialMinutes = parseInt(timer / 60, 10)
     let initialSeconds = parseInt(timer % 60, 10)
@@ -87,6 +89,15 @@ function startTimer(duration) {
         $('#time').html(`
         Initial time: ${initialMinutes}: ${initialSeconds}. Time remaining: ${minutes} : ${seconds}
         `)
+
+        if (timer === event) {
+            $('#powerUp').removeClass("d-none")
+
+            setTimeout(() => {
+                $('#powerUp').addClass("d-none")
+            }, 3000);
+        }
+
         if (--timer < 0) {
             clearInterval(intervalId)
             console.log("Timer expired")
@@ -173,7 +184,7 @@ function initializeGame(pokeCards, timer) {
     pokeCards = shuffleArray(pokeCards)
 
     // Populate your game with cards
-    $("#cardGame").empty()
+    $("#cardGame")
     $("#cardGame").append(`
     ${pokeCards.map(image => `
                 <div class="pokeCard">
@@ -222,10 +233,29 @@ function initializeThemes() {
 }
 
 
+function powerUp() {
+    let cards = $('#cardGame').children()
+    console.log(cards)
+    cards.toggleClass("flipped")
+    cards.toggleClass('disabled')
+    setTimeout(function () {
+        cards.toggleClass("flipped")
+        cards.toggleClass('disabled')
+    }, 2000)
+}
+
+
 const setup = async () => {
     let pokeCards;
     let timer
 
+    $('#powerUp').on('click', function () {
+        console.log("Test")
+
+        powerUp();
+
+        $(this).addClass('d-none')
+    })
 
     $(".btn-group .btn").click(function () {
         $(this).addClass('active').addClass('focus').siblings().removeClass('active')
