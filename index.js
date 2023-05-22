@@ -1,8 +1,8 @@
 function cardClick(event, flippedCards) {
     let target = event.currentTarget;
 
-
     target.classList.toggle('flipped')
+
     let checkImage = $(target).find(".pokeImg")[0]
     flippedCards.push(target)
     $(target).off('click');
@@ -11,6 +11,7 @@ function cardClick(event, flippedCards) {
         console.log(" 2 flipped")
         let index = 0;
         let firstCheck, secondCheck;
+        let match = false;
         flippedCards.forEach(card => {
             if (index === 0) {
                 firstCheck = $(card).find(".pokeImg")[0]
@@ -22,16 +23,22 @@ function cardClick(event, flippedCards) {
 
         if ($(firstCheck).attr("src") == $(secondCheck).attr("src")) {
             console.log("Match")
+            match = true;
         } else {
             console.log("No match")
         }
         flippedCards.forEach(card => {
-            setTimeout(() => {
-                $(card).toggleClass('flipped')
-                $(card).on('click', (event) => {
-                    cardClick(event, flippedCards)
-                })
-            }, 1000)
+            if (match) {
+                setTimeout(() => { }, 1000)
+                $(card).off('click');
+            } else {
+                setTimeout(() => {
+                    $(card).toggleClass('flipped')
+                    $(card).on('click', (event) => {
+                        cardClick(event, flippedCards)
+                    })
+                }, 1000)
+            }
 
         })
         flippedCards.length = 0
