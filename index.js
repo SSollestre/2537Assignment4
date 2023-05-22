@@ -103,18 +103,28 @@ function shuffleArray(array) {
 }
 
 
-const setup = async () => {
-
-    let cardPairs = 3;
+async function getPokemon(difficulty) {
+    let cardPairs
     let pokeCards = []
     let usedPokemon = []
+
+    if (difficulty === "easy") {
+        cardPairs = 3
+    } else if (difficulty === "medium") {
+        cardPairs = 6
+        $('#cardGame').css("width", "33em")
+    } else if (difficulty === "hard") {
+        cardPairs = 10
+        $('#cardGame').css("width", "41em")
+    }
+
 
     // Make a pair of cards for each card pair
     for (let i = 0; i < cardPairs; i++) {
         let randomPokemon = Math.floor(Math.random() * 100) + 1;
 
         // If that pokemon is not in use, use that pokemon
-        if (!usedPokemon.includes(usedPokemon)) {
+        if (!usedPokemon.includes(randomPokemon)) {
             usedPokemon.push(randomPokemon)
             let pokemonPromise = await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPokemon}`)
             let pokemon = pokemonPromise.data
@@ -123,7 +133,15 @@ const setup = async () => {
             i--
         }
     }
+    return pokeCards
+}
 
+
+function initializeGame(pokeCards, timer) {
+    console.log(pokeCards)
+    let totalClicks = 0;
+    let flippedCards = [];
+    let win = false;
     // Get your array of pokeCards
     pokeCards = pokeCards.flatMap(pokeObject => {
         return [pokeObject.sprites.front_default, pokeObject.sprites.front_default]
@@ -145,17 +163,10 @@ const setup = async () => {
     `).join('')}
     `)
 
-
-    let flippedCards = [];
-    let win = false;
-    let timer
-    let totalClicks = 0;
-
-
     $(".pokeCard").on("click", (event) => {
         totalClicks++
         updateTotalClicks(totalClicks)
-        cardClick(event, flippedCards, win, timer)
+        cardClick(event, flippedCards)
         win = checkWin()
         console.log(win)
         if (win) {
@@ -167,6 +178,24 @@ const setup = async () => {
             }, 1000)
         }
     });
+}
+
+
+function getTime(difficulty) {
+    if (difficulty === "easy") {
+        return 30
+    } else if (difficulty === "medium") {
+        return 60
+    } else if (difficulty === "hard") {
+        return 90
+    }
+}
+
+
+const setup = async () => {
+    let pokeCards;
+    let timer
+
 
     $(".btn-group .btn").click(function () {
         $(this).addClass('active').addClass('focus').siblings().removeClass('active')
@@ -176,23 +205,17 @@ const setup = async () => {
         location.reload()
     })
 
-    $('#start').on('click', function () {
-        timer = startTimer(65)
+    $('#start').on('click', async function () {
+        let difficulty = $('.btn-group .btn.active').attr('value')
+        pokeCards = await getPokemon(difficulty)
+        let duration = getTime(difficulty)
+        timer = startTimer(duration)
+        initializeGame(pokeCards, timer)
+
         $('#cardGame').removeClass('d-none')
+        $('#gameInfo').removeClass('d-none')
         $(this).addClass('d-none')
     })
-
-
-    // for (let index = 0; index < 6; index++) {
-    //     $('#cardGame').append(`
-    //     <div class="card">
-    //     <img src="${pokemonImg}">
-    //     <img src="${cardBack}">
-    //         Potato
-    //     </div>
-    //     `)
-
-    // }
 }
 
 
