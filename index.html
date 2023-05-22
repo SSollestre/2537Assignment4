@@ -14,44 +14,48 @@
 </head>
 
 <body>
-    <div class="vw-100 d-flex flex-column justify-content-start" id="content" style="height: auto;"">
+    <div class="vw-100 d-flex flex-column justify-content-start" id="content" style="height: auto;">
         <div class=" btn-group btn-group-toggle m-3 w-25 mx-auto">
-        <button class="btn btn-primary difficulty active focus" value="easy">Easy</button>
-        <button class="btn btn-primary difficulty" value="medium">Medium</button>
-        <button class="btn btn-primary difficulty" value="hard">Hard</button>
+            <button class="btn btn-primary difficulty active focus" value="easy">Easy</button>
+            <button class="btn btn-primary difficulty" value="medium">Medium</button>
+            <button class="btn btn-primary difficulty" value="hard">Hard</button>
+        </div>
+
+        <div class="mx-auto">
+            <button class="me-1 btn btn-primary" id="reset">Reset </button>
+            <button class="btn btn-primary" id="start">Start</button>
+        </div>
+
+        <div id="gameInfo" class="mt-2 d-flex justify-content-center flex-column text-center mb-3 d-none">
+            <div>
+                <h3 id="totalPairs">Total number of Pairs:</h3>
+            </div>
+            <div>
+                <h3 id="totalMatches">Total number of Matches: 0</h3>
+            </div>
+            <div>
+                <h3 id="pairsLeft">Number of pairs left:</h3>
+            </div>
+            <div>
+                <h3 id="totalClicks">Number of clicks: 0</h3>
+            </div>
+            <div>
+                <h3 id="time"></h3>
+            </div>
+        </div>
+
+        <div class="d-flex mx-auto flex-wrap align-items-stretch d-none border align-content-center justify-content-center bg-dark"
+            id="cardGame">
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center d-none" id="themes" style="height: 10vh;">
+            <button class="btn btn-dark" id="dark">Dark</button>
+            <button class="btn btn-light border" id="light">Light</button>
+
+        </div>
     </div>
 
-    <div class="mx-auto">
-        <button class="me-1 btn btn-primary" id="reset">Reset </button>
-        <button class="btn btn-primary" id="start">Start</button>
-    </div>
 
-    <div id="gameInfo" class="mt-2 d-flex justify-content-center flex-column text-center mb-3 d-none">
-        <div>
-            <h3 id="totalPairs">Total number of Pairs:</h3>
-        </div>
-        <div>
-            <h3 id="totalMatches">Total number of Matches: 0</h3>
-        </div>
-        <div>
-            <h3 id="pairsLeft">Number of pairs left:</h3>
-        </div>
-        <div>
-            <h3 id="totalClicks">Number of clicks: 0</h3>
-        </div>
-        <div>
-            <h3 id="time"></h3>
-        </div>
-    </div>
-
-    <div class="d-flex mx-auto flex-wrap align-items-stretch d-none border align-content-center justify-content-center"
-        id="cardGame">
-    </div>
-
-    </div>
-    <div style="height: 10vh;">
-
-    </div>
 
 
 

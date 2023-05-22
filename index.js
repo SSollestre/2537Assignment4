@@ -206,6 +206,17 @@ function getTime(difficulty) {
 }
 
 
+function initializeThemes() {
+    $('#dark').on('click', function () {
+        $('#cardGame').addClass("bg-dark")
+    })
+
+    $('#light').on('click', function () {
+        $('#cardGame').removeClass("bg-dark")
+    })
+}
+
+
 const setup = async () => {
     let pokeCards;
     let timer
@@ -225,10 +236,14 @@ const setup = async () => {
         let duration = getTime(difficulty)
         timer = startTimer(duration)
         initializeGame(pokeCards, timer)
+        initializeThemes()
 
         $('#cardGame').removeClass('d-none')
         $('#gameInfo').removeClass('d-none')
+        $('#themes').removeClass('d-none')
         $(this).addClass('d-none')
+
+
     })
 }
 
