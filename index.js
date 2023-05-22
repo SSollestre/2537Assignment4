@@ -90,6 +90,11 @@ function startTimer(duration) {
         if (--timer < 0) {
             clearInterval(intervalId)
             console.log("Timer expired")
+            $('#cardGame').html(`
+            <div class="d-flex align-items-center"  style="height: 8em;">
+ <h1> Game over </h1>
+            </div>
+            `)
         }
     }, 1000)
     return intervalId
