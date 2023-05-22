@@ -56,6 +56,25 @@ function checkWin() {
 }
 
 
+function startTimer(duration) {
+    let timer = duration
+    let minutes, seconds
+
+    let intervalId = setInterval(() => {
+        minutes = parseInt(timer / 60, 10)
+        seconds = parseInt(timer % 60, 10)
+
+        minutes = minutes < 10 ? "0" + minutes : minutes
+        seconds = seconds < 10 ? "0" + seconds : seconds
+        console.log(minutes + ":" + seconds)
+        if (--timer < 0) {
+            clearInterval(intervalId)
+            console.log("Timer expired")
+        }
+    }, 1000)
+}
+
+
 const setup = async () => {
     const randomPokemon = Math.floor(Math.random() * 100) + 1;
     let pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPokemon}`)
@@ -65,6 +84,7 @@ const setup = async () => {
     let pokemonImg = pokemon.sprites.front_default
     let flippedCards = [];
     let win = false;
+    startTimer(5)
 
     $(".pokeCard").on("click", (event) => {
         cardClick(event, flippedCards)
