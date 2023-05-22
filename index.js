@@ -80,6 +80,7 @@ function startTimer(duration) {
             console.log("Timer expired")
         }
     }, 1000)
+    return intervalId
 }
 
 
@@ -92,6 +93,7 @@ const setup = async () => {
     let pokemonImg = pokemon.sprites.front_default
     let flippedCards = [];
     let win = false;
+    let timer
 
 
     $(".pokeCard").on("click", (event) => {
@@ -99,12 +101,14 @@ const setup = async () => {
         win = checkWin()
         console.log(win)
         if (win) {
-            console.log("Winner")
+            setTimeout(function () {
+                alert("You have won!")
+            }, 1000)
         }
+        clearInterval(timer)
     });
 
     $(".btn-group .btn").click(function () {
-        console.log("test")
         $(this).addClass('active').addClass('focus').siblings().removeClass('active')
     })
 
@@ -113,7 +117,7 @@ const setup = async () => {
     })
 
     $('#start').on('click', function () {
-        startTimer(65)
+        timer = startTimer(65)
         $('#cardGame').removeClass('d-none')
         $(this).addClass('d-none')
     })
