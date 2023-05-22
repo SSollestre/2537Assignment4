@@ -1,11 +1,10 @@
-function cardClick(event, flippedCards) {
+function cardClick(event, flippedCards, matches, totalPairs) {
     let target = event.currentTarget;
 
     target.classList.toggle('flipped')
     $(target).addClass("disabled")
 
     flippedCards.push(target)
-    console.log(flippedCards)
 
     // If there are two flipped cards, check and then flip them back if they do not match
     if (flippedCards.length === 2) {
@@ -21,6 +20,16 @@ function cardClick(event, flippedCards) {
         // Check if they are the same image
         if (firstImg === secondImg) {
             console.log("Match")
+            matches[0]++
+
+            $('#totalMatches').html(`
+            <h3 id="totalMatches">Total number of Matches: ${matches[0]}</h3>
+            `)
+
+            $('#pairsLeft').html(`
+             <h3 id="pairsLeft">Number of pairs left: ${totalPairs - matches[0]}</h3>
+            `)
+
             flippedCards.length = 0
         } else {
             console.log("No Match")
@@ -36,7 +45,6 @@ function cardClick(event, flippedCards) {
                 $(target).siblings().removeClass("disabled")
 
                 // Flip images back after a delay so that animation plays
-                console.log(flippedCards)
                 flippedCards.forEach(element => {
                     element.classList.toggle('flipped')
                 })
@@ -66,6 +74,9 @@ function startTimer(duration) {
     let initialSeconds = parseInt(timer % 60, 10)
     initialMinutes = initialMinutes < 10 ? "0" + initialMinutes : initialMinutes
     initialSeconds = initialSeconds < 10 ? "0" + initialSeconds : initialSeconds
+    $('#time').html(`
+        Initial time: ${initialMinutes}: ${initialSeconds}. Time remaining: ${initialMinutes} : ${initialSeconds}
+        `)
 
     let intervalId = setInterval(() => {
         minutes = parseInt(timer / 60, 10)
@@ -73,7 +84,6 @@ function startTimer(duration) {
 
         minutes = minutes < 10 ? "0" + minutes : minutes
         seconds = seconds < 10 ? "0" + seconds : seconds
-        console.log(minutes + ":" + seconds)
         $('#time').html(`
         Initial time: ${initialMinutes}: ${initialSeconds}. Time remaining: ${minutes} : ${seconds}
         `)
@@ -82,7 +92,6 @@ function startTimer(duration) {
             console.log("Timer expired")
         }
     }, 1000)
-    console.log(intervalId)
     return intervalId
 }
 
@@ -118,6 +127,13 @@ async function getPokemon(difficulty) {
         $('#cardGame').css("width", "41em")
     }
 
+    $('#totalPairs').html(`
+    <h3 id="totalPairs">Total number of Pairs: ${cardPairs}</h3>
+    `)
+    $('#pairsLeft').html(`
+     <h3 id="pairsLeft">Number of pairs left: ${cardPairs}</h3> 
+    `)
+
 
     // Make a pair of cards for each card pair
     for (let i = 0; i < cardPairs; i++) {
@@ -138,10 +154,11 @@ async function getPokemon(difficulty) {
 
 
 function initializeGame(pokeCards, timer) {
-    console.log(pokeCards)
     let totalClicks = 0;
     let flippedCards = [];
     let win = false;
+    let matches = [0];
+
     // Get your array of pokeCards
     pokeCards = pokeCards.flatMap(pokeObject => {
         return [pokeObject.sprites.front_default, pokeObject.sprites.front_default]
@@ -149,7 +166,6 @@ function initializeGame(pokeCards, timer) {
 
     // Shuffle your pokemon cards
     pokeCards = shuffleArray(pokeCards)
-    console.log(pokeCards)
 
     // Populate your game with cards
     $("#cardGame").empty()
@@ -166,12 +182,10 @@ function initializeGame(pokeCards, timer) {
     $(".pokeCard").on("click", (event) => {
         totalClicks++
         updateTotalClicks(totalClicks)
-        cardClick(event, flippedCards)
+        cardClick(event, flippedCards, matches, pokeCards.length / 2)
         win = checkWin()
-        console.log(win)
         if (win) {
             setTimeout(function () {
-                console.log(win)
                 alert("You have won!")
                 console.log("Stopping timer")
                 clearInterval(timer)
