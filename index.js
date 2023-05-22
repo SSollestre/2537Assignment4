@@ -29,8 +29,8 @@ function cardClick(event, flippedCards) {
         }
         flippedCards.forEach(card => {
             if (match) {
-                setTimeout(() => { }, 1000)
                 $(card).off('click');
+
             } else {
                 setTimeout(() => {
                     $(card).toggleClass('flipped')
@@ -45,6 +45,16 @@ function cardClick(event, flippedCards) {
     }
 }
 
+function checkWin() {
+    let win = true
+    $("#cardGame").children().each((index, element) => {
+        if (!$(element).hasClass("flipped")) {
+            win = false;
+        }
+    })
+    return win
+}
+
 
 const setup = async () => {
     const randomPokemon = Math.floor(Math.random() * 100) + 1;
@@ -54,9 +64,15 @@ const setup = async () => {
     // Test image: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png
     let pokemonImg = pokemon.sprites.front_default
     let flippedCards = [];
+    let win = false;
 
     $(".pokeCard").on("click", (event) => {
         cardClick(event, flippedCards)
+        win = checkWin()
+        console.log(win)
+        if (win) {
+            console.log("Winner")
+        }
     });
 
 
