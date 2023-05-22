@@ -32,3 +32,11 @@
     z-index: 0;
     transform: rotateY(180deg);
 }
+
+
+.btn-group .btn.active:focus {
+    /* Add your desired styling for the focused state of the active button */
+    /* For example, change the border color or add a box-shadow */
+    border-color: #0062cc;
+    box-shadow: 0 0 10px rgba(0, 92, 191);
+}

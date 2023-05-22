@@ -95,6 +95,11 @@ const setup = async () => {
         }
     });
 
+    $(".btn-group .btn").click(function () {
+        console.log("test")
+        $(this).addClass('active').addClass('focus').siblings().removeClass('active')
+    })
+
 
     // for (let index = 0; index < 6; index++) {
     //     $('#cardGame').append(`
