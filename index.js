@@ -103,7 +103,7 @@ function startTimer(duration) {
             console.log("Timer expired")
             $('#cardGame').html(`
             <div class="d-flex align-items-center"  style="height: 8em;">
- <h1> Game over </h1>
+ <h1 style="color: red;"> Game over </h1>
             </div>
             `)
         }
