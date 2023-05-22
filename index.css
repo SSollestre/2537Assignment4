@@ -40,3 +40,7 @@
     border-color: #0062cc;
     box-shadow: 0 0 10px rgba(0, 92, 191);
 }
+
+.disabled {
+    pointer-events: none
+}

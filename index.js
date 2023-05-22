@@ -2,46 +2,48 @@ function cardClick(event, flippedCards) {
     let target = event.currentTarget;
 
     target.classList.toggle('flipped')
+    $(target).addClass("disabled")
 
-    let checkImage = $(target).find(".pokeImg")[0]
     flippedCards.push(target)
-    $(target).off('click');
+    console.log(flippedCards)
 
+    // If there are two flipped cards, check and then flip them back if they do not match
     if (flippedCards.length === 2) {
-        console.log(" 2 flipped")
-        let index = 0;
-        let firstCheck, secondCheck;
-        let match = false;
-        flippedCards.forEach(card => {
-            if (index === 0) {
-                firstCheck = $(card).find(".pokeImg")[0]
+        let firstImg, secondImg
+        for (let i = 0; i < flippedCards.length; i++) {
+            if (i === 0) {
+                firstImg = $($(flippedCards[i]).find(".pokeImg")[0]).attr("src")
             } else {
-                secondCheck = $(card).find(".pokeImg")[0]
+                secondImg = $($(flippedCards[i]).find(".pokeImg")[0]).attr("src")
             }
-            index++
-        })
-
-        if ($(firstCheck).attr("src") == $(secondCheck).attr("src")) {
-            console.log("Match")
-            match = true;
-        } else {
-            console.log("No match")
         }
-        flippedCards.forEach(card => {
-            if (match) {
-                $(card).off('click');
 
-            } else {
-                setTimeout(() => {
-                    $(card).toggleClass('flipped')
-                    $(card).on('click', (event) => {
-                        cardClick(event, flippedCards)
-                    })
-                }, 1000)
-            }
+        // Check if they are the same image
+        if (firstImg === secondImg) {
+            console.log("Match")
+            flippedCards.length = 0
+        } else {
+            console.log("No Match")
 
-        })
-        flippedCards.length = 0
+            // Disable neighbors until animation stops
+            console.log("Disabling...")
+            $(target).siblings().addBack().addClass("disabled")
+
+            // Re-enable neighbors
+            setTimeout(() => {
+                console.log("Enabling...")
+                $(target).removeClass("disabled")
+                $(target).siblings().removeClass("disabled")
+
+                // Flip images back after a delay so that animation plays
+                console.log(flippedCards)
+                flippedCards.forEach(element => {
+                    element.classList.toggle('flipped')
+                })
+                // Reset the card checking array
+                flippedCards.length = 0
+            }, 1000)
+        }
     }
 }
 
@@ -80,6 +82,7 @@ function startTimer(duration) {
             console.log("Timer expired")
         }
     }, 1000)
+    console.log(intervalId)
     return intervalId
 }
 
@@ -97,15 +100,17 @@ const setup = async () => {
 
 
     $(".pokeCard").on("click", (event) => {
-        cardClick(event, flippedCards)
+        cardClick(event, flippedCards, win, timer)
         win = checkWin()
         console.log(win)
         if (win) {
             setTimeout(function () {
+                console.log(win)
                 alert("You have won!")
+                console.log("Stopping timer")
+                clearInterval(timer)
             }, 1000)
         }
-        clearInterval(timer)
     });
 
     $(".btn-group .btn").click(function () {
