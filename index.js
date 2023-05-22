@@ -87,19 +87,74 @@ function startTimer(duration) {
 }
 
 
+function updateTotalClicks(totalClicks) {
+    $('#totalClicks').html(`
+    <h3 id="totalClicks">Number of clicks: ${totalClicks}</h3>
+`)
+}
+
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+
 const setup = async () => {
-    const randomPokemon = Math.floor(Math.random() * 100) + 1;
-    let pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPokemon}`)
-    let pokemon = pokemonResponse.data
-    let cardBack = `https://velvety-mousse-38f1cf.netlify.app/back.webp`
-    // Test image: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png
-    let pokemonImg = pokemon.sprites.front_default
+
+    let cardPairs = 3;
+    let pokeCards = []
+    let usedPokemon = []
+
+    // Make a pair of cards for each card pair
+    for (let i = 0; i < cardPairs; i++) {
+        let randomPokemon = Math.floor(Math.random() * 100) + 1;
+
+        // If that pokemon is not in use, use that pokemon
+        if (!usedPokemon.includes(usedPokemon)) {
+            usedPokemon.push(randomPokemon)
+            let pokemonPromise = await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPokemon}`)
+            let pokemon = pokemonPromise.data
+            pokeCards.push(pokemon)
+        } else {
+            i--
+        }
+    }
+
+    // Get your array of pokeCards
+    pokeCards = pokeCards.flatMap(pokeObject => {
+        return [pokeObject.sprites.front_default, pokeObject.sprites.front_default]
+    })
+
+    // Shuffle your pokemon cards
+    pokeCards = shuffleArray(pokeCards)
+    console.log(pokeCards)
+
+    // Populate your game with cards
+    $("#cardGame").empty()
+    $("#cardGame").append(`
+    ${pokeCards.map(image => `
+                <div class="pokeCard">
+                <img src="${image}"
+                    class="pokeImg">
+                <img src="https://velvety-mousse-38f1cf.netlify.app/back.webp" class="pokeBack">
+            </div>
+    `).join('')}
+    `)
+
+
     let flippedCards = [];
     let win = false;
     let timer
+    let totalClicks = 0;
 
 
     $(".pokeCard").on("click", (event) => {
+        totalClicks++
+        updateTotalClicks(totalClicks)
         cardClick(event, flippedCards, win, timer)
         win = checkWin()
         console.log(win)
